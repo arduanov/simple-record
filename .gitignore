@@ -1,5 +1,4 @@
 build
-composer.phar
 vendor
 tests/_output/*
 .idea
