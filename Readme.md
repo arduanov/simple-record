@@ -1,0 +1,1 @@
+![Travis](https://travis-ci.org/arduanov/simple-record.svg?branch=master)
