@@ -1,0 +1,24 @@
+{
+  "name": "arduanov/simple-record",
+  "description": "Active REcord implementation on top of Docrtine DBAL.",
+  "keywords": ["active record", "DBAL", "Doctrine"],
+  "homepage": "http://yandex.ru",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marsel Arduanov",
+      "email": "arduanov@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5",
+    "doctrine/dbal": "~2.5"
+  },
+  "require-dev": {
+    "ext-sqlite3": "*",
+    "codeception/codeception": "~2.1.0"
+  },
+  "autoload": {
+    "psr-0": { "SimpleRecord": "src/" }
+  }
+}

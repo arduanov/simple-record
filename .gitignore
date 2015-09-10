@@ -1,0 +1,5 @@
+build
+composer.phar
+vendor
+tests/_output/*
+tests/_output/*
