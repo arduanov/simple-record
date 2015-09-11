@@ -86,27 +86,27 @@ class SimpleRecordTest extends \Codeception\TestCase\Test
         $stub_record->__construct(null, true);
     }
 
-//    public function testSaveBeforeSave()
-//    {
-//        $stub_record = Stub::make('Post', ['beforeSave' => Stub::once(function () {
-//            return false;
-//        })]);
-//        $result = $stub_record->save();
-//
-//        $this->assertFalse($result);
-//    }
-//
-//    public function testBeforeInsert()
-//    {
-//        $stub_record = Stub::make('Comment', ['TABLE_NAME' => '123', 'beforeInsert' => Stub::once(function () {
-//            return false;
-//        })]);
-//        $stub_record->slug = 'testuser';
-//        $stub_record->title = 1;
-//        $result = $stub_record->save();
-//
-//        $this->assertFalse($result);
-//    }
+    public function testSaveBeforeSave()
+    {
+        $stub_record = Stub::make('Post', ['beforeSave' => Stub::once(function () {
+            return false;
+        })]);
+        $result = $stub_record->save();
+
+        $this->assertFalse($result);
+    }
+
+    public function testBeforeInsert()
+    {
+        $stub_record = Stub::make('Comment', ['TABLE_NAME' => '123', 'beforeInsert' => Stub::once(function () {
+            return false;
+        })]);
+        $stub_record->slug = 'testuser';
+        $stub_record->title = 1;
+        $result = $stub_record->save();
+
+        $this->assertFalse($result);
+    }
 
     public function testSaveInsert()
     {
@@ -221,9 +221,64 @@ class SimpleRecordTest extends \Codeception\TestCase\Test
         $post->delete();
     }
 
-    public function testFindFalse()
+    public function testFindByIdFail()
     {
         $post = new Post();
         $this->assertFalse($post->find(101));
+    }
+
+    public function testFindAll()
+    {
+        $stub_record = Stub::makeEmptyExcept('Comment', 'findAll',
+            [
+                'findBy' => Stub::once(function () {
+                    return true;
+                })
+            ]);
+        $stub_record->findAll();
+    }
+
+    public function testFindBy()
+    {
+        $post = new Post(['slug' => 'slug1', 'title' => 'title1']);
+        $post->save();
+        $post = new Post(['slug' => 'slug2', 'title' => 'title2']);
+        $post->save();
+        $post = new Post(['slug' => 'slug3', 'title' => 'title3']);
+        $post->save();
+        $post = new Post(['slug' => 'slug4', 'title' => 'title4']);
+        $post->save();
+        $post = new Post(['slug' => 'slug5', 'title' => 'title5']);
+        $post->save();
+
+
+        $collection = $post->findBy(['id' => [1, 2, 3, 4]], ['id' => 'DESC'], 3, 1);
+        $this->assertCount(3, $collection);
+        $this->assertEquals(3, $collection[0]->id);
+    }
+
+    /**
+     * @expectedException        \Exception
+     * @expectedExceptionMessage finded more than one
+     */
+    public function testFindOneByFail()
+    {
+        $post = new Post(['slug' => 'slug1', 'title' => 'title1']);
+        $post->save();
+        $post = new Post(['slug' => 'slug2', 'title' => 'title2']);
+        $post->save();
+
+        $post->findOneBy(['id' => [1,2]]);
+    }
+
+    public function testFindOneBy()
+    {
+        $post = new Post(['slug' => 'slug1', 'title' => 'title1']);
+        $post->save();
+        $post = new Post(['slug' => 'slug2', 'title' => 'title2']);
+        $post->save();
+        $item = $post->findOneBy(['id' => 2]);
+
+        $this->assertEquals($post,$item);
     }
 }

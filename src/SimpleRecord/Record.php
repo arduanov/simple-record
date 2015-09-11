@@ -69,11 +69,11 @@ class Record
      * the class's variables based on the key=>value pairs found in the array.
      *
      * @param array $data An array of key,value pairs.
-     * @param boolean $FETCH_PDO
+     * @param boolean $is_pdo_fetch
      */
-    public function __construct(array $data = null, $FETCH_PDO = false)
+    public function __construct(array $data = null, $is_pdo_fetch = false)
     {
-        if ($FETCH_PDO) {
+        if ($is_pdo_fetch) {
             $this->afterFetch();
         }
         if (is_array($data)) {
@@ -228,8 +228,10 @@ class Record
             $type = null;
             if (is_array($value)) {
                 $type = DBAL\Connection::PARAM_STR_ARRAY;
+                $where = $key . ' IN (:' . $key . ')';
+            } else {
+                $where = $key . ' = :' . $key;
             }
-            $where = $key . ' = :' . $key;
             $qb->andWhere($where)
                ->setParameter(':' . $key, $value, $type);
         }
