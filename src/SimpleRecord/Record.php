@@ -54,12 +54,12 @@ class Record
 
         if (defined($class_name . '::TABLE_NAME')) {
             return constant($class_name . '::TABLE_NAME');
-        } else {
-            $reflection = new \ReflectionClass($class_name);
-            $class_name = $reflection->getShortName();
-
-            return Inflector::tableize($class_name);
         }
+
+        $reflection = new \ReflectionClass($class_name);
+        $class_name = $reflection->getShortName();
+
+        return Inflector::tableize($class_name);
     }
 
     /**
