@@ -105,8 +105,6 @@ class Record
         }
         $value_of = [];
         $columns = $this->getColumns();
-//        var_dump($columns);
-//        exit;
 
         foreach ($columns as $column) {
             if (!empty($this->$column) || is_numeric($this->$column)) { // Do include 0 as value
@@ -167,7 +165,7 @@ class Record
         $return = (bool)self::$CONN->delete($this->tableName(), ['id' => $this->id]);
 
         if (!$this->afterDelete()) {
-//            $this->save();
+            $this->save();
             return false;
         }
 
