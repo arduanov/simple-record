@@ -299,7 +299,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function beforeSave()
+    protected function beforeSave()
     {
         return true;
     }
@@ -309,7 +309,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function beforeInsert()
+    protected function beforeInsert()
     {
         return true;
     }
@@ -319,7 +319,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function beforeUpdate()
+    protected function beforeUpdate()
     {
         return true;
     }
@@ -329,7 +329,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function beforeDelete()
+    protected function beforeDelete()
     {
         return true;
     }
@@ -339,7 +339,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function afterFetch()
+    protected function afterFetch()
     {
         return true;
     }
@@ -349,7 +349,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function afterSave()
+    protected function afterSave()
     {
         return true;
     }
@@ -359,7 +359,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function afterInsert()
+    protected function afterInsert()
     {
         return true;
     }
@@ -369,7 +369,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function afterUpdate()
+    protected function afterUpdate()
     {
         return true;
     }
@@ -379,7 +379,7 @@ class Record
      *
      * @return boolean True if the actions succeeded.
      */
-    public function afterDelete()
+    protected function afterDelete()
     {
         return true;
     }
