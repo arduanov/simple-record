@@ -14,8 +14,8 @@ class Record
      * @var \Doctrine\DBAL\Connection
      */
     protected static $CONN;
+    protected static $QB;
 //    public static $EVENT_MANAGER;
-//    protected static $QUERY_BUILDER;
 
     /**
      * Sets a static reference for the connection to the database.
@@ -222,7 +222,12 @@ class Record
         $qb->select('*')
            ->from($this->tableName());
 
+//        $columns = $this->getColumns();
+
         foreach ($criteria as $key => $value) {
+//            if (!in_array($key, $columns)) {
+//                continue;
+//            }
             $type = null;
             if (is_array($value)) {
                 $type = DBAL\Connection::PARAM_STR_ARRAY;
@@ -252,6 +257,16 @@ class Record
 //
 //        return '';
 //    }
+
+    public function countLastQuery()
+    {
+        $qb = self::$QB;
+        $qb->select('count(id)')
+           ->resetQueryPart('orderBy')
+           ->setMaxResults(null)
+           ->setFirstResult(null);
+        return $qb->execute()->fetchColumn(0);
+    }
 
     /**
      * Returns a single object, retrieved from the database.
@@ -284,13 +299,9 @@ class Record
      * @param DBAL\Query\QueryBuilder $qb
      * @return array
      */
-    public function findByQueryBuilder(DBAL\Query\QueryBuilder $qb = null)
+    public function findByQueryBuilder(DBAL\Query\QueryBuilder $qb)
     {
-//        if (!$qb && self::$QUERY_BUILDER) {
-//            $qb = self::$QUERY_BUILDER;
-//            self::$QUERY_BUILDER = null;
-//        }
-//        $one = $qb->getMaxResults();
+        self::$QB = $qb;
         return $qb->execute()->fetchAll(\PDO::FETCH_CLASS, get_class($this), [null, true]);
     }
 

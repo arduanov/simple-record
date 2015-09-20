@@ -268,7 +268,7 @@ class SimpleRecordTest extends \Codeception\TestCase\Test
         $post = new Post(['slug' => 'slug2', 'title' => 'title2']);
         $post->save();
 
-        $post->findOneBy(['id' => [1,2]]);
+        $post->findOneBy(['id' => [1, 2]]);
     }
 
     public function testFindOneBy()
@@ -279,6 +279,6 @@ class SimpleRecordTest extends \Codeception\TestCase\Test
         $post->save();
         $item = $post->findOneBy(['id' => 2]);
 
-        $this->assertEquals($post,$item);
+        $this->assertEquals($post, $item);
     }
 }
