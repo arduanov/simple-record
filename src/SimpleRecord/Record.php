@@ -218,16 +218,9 @@ class Record
      */
     public function findBy(array $criteria, array $orderBy = [], $limit = null, $offset = null)
     {
-        $qb = self::$CONN->createQueryBuilder();
-        $qb->select('*')
-           ->from($this->tableName());
-
-//        $columns = $this->getColumns();
+        $qb = $this->getQueryBuilder();
 
         foreach ($criteria as $key => $value) {
-//            if (!in_array($key, $columns)) {
-//                continue;
-//            }
             $type = null;
             if (is_array($value)) {
                 $type = DBAL\Connection::PARAM_STR_ARRAY;
@@ -253,8 +246,6 @@ class Record
 //    public function findBySql($sql)
 //    {
 //        $qb = self::$CONN->query();
-//
-//
 //        return '';
 //    }
 
@@ -290,10 +281,11 @@ class Record
         return array_shift($items);
     }
 
-//    public function createQueryBuilder()
-//    {
-//        return self::$QUERY_BUILDER = self::$CONN->createQueryBuilder();
-//    }
+
+    public function getQueryBuilder()
+    {
+        return self::$CONN->createQueryBuilder()->select('*')->from($this->tableName());
+    }
 
     /**
      * @param DBAL\Query\QueryBuilder $qb
