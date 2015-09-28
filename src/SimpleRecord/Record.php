@@ -93,16 +93,8 @@ class Record
         }
     }
 
-    /**
-     * Generates an insert or update string from the supplied data and executes it
-     *
-     * @return boolean True when the insert or update succeeded.
-     */
-    public function save()
+    private function getValuesForDb()
     {
-        if (!$this->beforeSave()) {
-            return false;
-        }
         $value_of = [];
         $columns = $this->getColumns();
 
@@ -116,12 +108,25 @@ class Record
         if (isset($value_of['id'])) {
             unset($value_of['id']);
         }
+        return $value_of;
+    }
+
+    /**
+     * Generates an insert or update string from the supplied data and executes it
+     *
+     * @return boolean True when the insert or update succeeded.
+     */
+    public function save()
+    {
+        if (!$this->beforeSave()) {
+            return false;
+        }
 
         if (empty($this->id)) {
             if (!$this->beforeInsert()) {
                 return false;
             }
-
+            $value_of = $this->getValuesForDb();
             $return = (bool)self::$CONN->insert($this->tableName(), $value_of);
             if (in_array('id', $this->getColumns())) {
                 $this->id = self::$CONN->lastInsertId();
@@ -133,7 +138,8 @@ class Record
             if (!$this->beforeUpdate()) {
                 return false;
             }
-
+            
+            $value_of = $this->getValuesForDb();
             $return = (bool)self::$CONN->update($this->tableName(), $value_of, ['id' => $this->id]);
 
             if (!$this->afterUpdate()) {
